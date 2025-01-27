@@ -2,7 +2,7 @@ package product
 
 type Service struct{}
 
-func newService() *Service {
+func NewService() *Service {
 	return &Service{}
 }
 

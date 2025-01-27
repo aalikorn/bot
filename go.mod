@@ -1,4 +1,4 @@
-module githu.com/aalikorn/bot
+module github.com/aalikorn/bot
 
 go 1.23.4
 

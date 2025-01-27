@@ -27,7 +27,7 @@ func main() {
 
 	updates := bot.GetUpdatesChan(u)
 
-	productService = product.NewService()
+	productService := product.NewService()
 
 	for update := range updates {
 		if update.Message == nil {
@@ -38,7 +38,7 @@ func main() {
 		case "help":
 			helpCommand(bot, update.Message)
 		case "list":
-			listCommand(bot, update.Message)
+			listCommand(bot, update.Message, productService)
 		default:
 			defaultBehavior(bot, update.Message)
 		}
@@ -51,9 +51,13 @@ func helpCommand(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
 	bot.Send(msg)
 }
 
-func listCommand(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
-	msg := tgbotapi.NewMessage(inputMessage.Chat.ID,
-		"TBD")
+func listCommand(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message, productService *product.Service) {
+	msgText := "All the products: \n\n"
+	products := productService.List()
+	for _, p := range products {
+		msgText += p.Title + "\n"
+	}
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, msgText)
 	bot.Send(msg)
 }
 
